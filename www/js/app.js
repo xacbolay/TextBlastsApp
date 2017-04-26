@@ -8,7 +8,8 @@
 angular.module('starter', [
   'ionic', 
   'starter.controllers', 
-  'starter.services'
+  'starter.services',
+  'ngStorage'
 ])
 
 .run(function($ionicPlatform, $http, $localStorage) {
@@ -26,13 +27,15 @@ angular.module('starter', [
     }
 
     // User token for API middleware.
-    $http.defaults.headers.common['token'] = $localStorage.settings.user.token;
+    if ($localStorage.settings) {
+      $http.defaults.headers.common['token'] = $localStorage.settings.user.token;
+    }    
   });
 })
 
 .config(function($stateProvider, $urlRouterProvider, $httpProvider) {
   //
-  $httpProvider.interceptors.push('tokenInterceptor');
+  //$httpProvider.interceptors.push('tokenInterceptor');
 
   // Ionic uses AngularUI Router which uses the concept of states
   // Learn more here: https://github.com/angular-ui/ui-router
@@ -40,7 +43,7 @@ angular.module('starter', [
   // Each state's controller can be found in controllers.js
   
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/contacts');
+  $urlRouterProvider.otherwise('/');
 
   $stateProvider
 

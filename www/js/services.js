@@ -3,9 +3,9 @@ angular.module('starter.services', ['ngStorage'])
 .factory('AuthService', function($localStorage, $state, $http) {
   this.authorize = function() {
     if ($state.is('login')) {
-      if ($localStorage.settings.user) $state.go('/');
+      if ($localStorage.settings) $state.go('/');
     } else {
-      if (!$localStorage.settings.user) $state.go('login');
+      if (!$localStorage.settings) $state.go('login');
     }
   };
   this.header = function(name, value) {

@@ -10,42 +10,49 @@
     </a>
   </ion-nav-buttons>
 
-  <ion-content>
-    <label class="item item-input">
-      <i class="icon ion-search placeholder-icon"></i>
-      <input type="text" placeholder="Search" ng-model="searchData" ng-change="findBy()">
-    </label>
+  <div class="bar bar-subheader">
+    <h2 class="title">
+      <label class="item item-input">
+        <i class="icon ion-search placeholder-icon"></i>
+        <input type="text" placeholder="Search" ng-model="searchData" ng-change="findBy()">
+      </label>
+    </h2>
+  </div>
 
+  <ion-content style="margin-top: 50px">
     <label class="item item-input item-select">
       <div class="input-label">Order by</div>
-      <select ng-model="orderByType">
+      <select ng-model="orderByType" ng-change="orderBy()">
         <option>Age</option>
         <option>Gender</option>
         <option>Rating</option>
       </select>
     </label>
-    
-    <br>
 
-    <ion-list ng-show="searchResult.length">
+    <p>Number: {{ searchResult.length }}</p>
+    <p>searchResult type: {{ searchResult }}</p>
+    <p>Data : {{ searchData }}</p>
+    <p>order by type : {{ orderByType }}</p>
+
+    <ion-list ng-show="!searchResult.length">
       <a class="item item-thumbnail-left" href="#/contacts/{{contact.id}}" ng-repeat="contact in contacts">
         <img src="cover.jpg">
-        <h2>Name</h2>
-        <p>phone number</p>
-        <p>gender</p>
-        <p>age</p>
-        <p>rating</p>
+        <h2>Name {{ contact.name }}</h2>
+        <p>phone number {{ contact.phone }}</p>
+        <p>gender {{ contact.gender }}</p>
+        <p>age {{ contact.age }}</p>
+        <p>rating {{ contact.rating }}</p>
       </a>
     </ion-list>
 
     <ion-list ng-show="searchResult.length">
       <a class="item item-thumbnail-left" href="#/contacts/{{contact.id}}" ng-repeat="contact in searchResult">
         <img src="cover.jpg">
-        <h2>Name</h2>
-        <p>phone number</p>
-        <p>gender</p>
-        <p>age</p>
-        <p>rating</p>
+        <h2>Name {{ contact.name }}</h2>
+        <p>phone number {{ contact.phone }}</p>
+        <p>gender {{ contact.gender }}</p>
+        <p>age {{ contact.age }}</p>
+        <p>rating {{ contact.rating }}</p>
       </a>
     </ion-list>
   </ion-content>

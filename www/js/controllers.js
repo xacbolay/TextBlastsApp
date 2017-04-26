@@ -36,20 +36,20 @@ angular.module('starter.controllers', ['ngStorage'])
 })
 
 .controller('ContactsController', function($scope, $filter, $ionicSideMenuDelegate, $ionicHistory, AuthService) {
-  AuthService.authorize();
+  //AuthService.authorize();
   $scope.contacts = [
-    {name: 'david'}, 
-    {name: 'david'},
-    {name: 'david'},
-    {name: 'david'},
-    {name: 'david'},
-    {name: 'david'},
-    {name: 'david'}
+    {name: 'david', phone: 12345, age: 18, gender: 'female', rating: 10}, 
+    {name: 'victor', phone: 12345, age: 21, gender: 'male', rating: 5},
+    {name: 'david miranda', phone: 12345, age: 24, gender: 'female', rating: 1},
+    {name: 'david', phone: 12333, age: 22, gender: 'male', rating: 5},
+    {name: 'david alexader', phone: 12345, age: 24, gender: 'female', rating: 10},
+    {name: 'alexander david', phone: 22222, age: 24, gender: 'male', rating: 10},
+    {name: 'david', phone: 12345, age: 28, gender: 'female', rating: 2}
   ];
   $scope.contact = {};
   $scope.searchData = null;
   $scope.searchResult = [];
-  $scope.orderByType;
+  $scope.orderByType = null;
 
   $scope.sendMessage = function() {
     // body
@@ -63,32 +63,42 @@ angular.module('starter.controllers', ['ngStorage'])
   $scope.toggleMenu = function() {
     $ionicSideMenuDelegate.toggleLeft();
   };
-  this.findBy = function() {
-    if (typeof $scope.searchData == 'string' && $scope.searchData.length) {
-
-    } else if (typeof $scope.searchData == 'string') {
-      this.findByName();
-    } else if (typeof $scope.searchData == 'number') {
-      this.findByPhone();
+  $scope.findBy = function() {
+    if (isNaN($scope.searchData)) {
+      findByName();
+    } else {
+      findByPhone();
     }
   };
-  this.findByName = function() {
+  var findByName = function() {
     $scope.searchResult = $scope.contacts.filter(function(contact) {
-      return contact.name.search($scope.searchData);
+      return contact.name.includes($scope.searchData);
     });
   };
-  this.findByPhone = function() {
+  var findByPhone = function() {
     $scope.searchResult = $scope.contacts.filter(function(contact) {
       return contact.phone == $scope.searchData;
     });
   };
-  $scope.orderByRating = function() {
+  $scope.orderBy = function() {
+    if ($scope.orderByType.includes('Age')) {
+      console.log('age');
+      orderByAge();
+    } else if ($scope.orderByType.includes('Gender')) {
+      console.log('gender');
+      orderByGender();
+    } else if ($scope.orderByType.includes('Rating')) {
+      console.log('rating');
+      orderByRating();
+    }
+  };
+  var orderByRating = function() {
     $filter('orderBy')($scope.contacts, 'name');
   };
-  $scope.orderByGender = function() {
+  var orderByGender = function() {
     $filter('orderBy')($scope.contacts, 'gender');
   };
-  $scope.orderByAge = function() {
+  var orderByAge = function() {
     $filter('orderBy')($scope.contacts, 'age');
   };
 
