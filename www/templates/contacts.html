@@ -13,7 +13,7 @@
   <ion-content>
     <label class="item item-input">
       <i class="icon ion-search placeholder-icon"></i>
-      <input type="text" placeholder="Search">
+      <input type="text" placeholder="Search" ng-model="searchData" ng-change="findBy()">
     </label>
 
     <label class="item item-input item-select">
@@ -27,8 +27,19 @@
     
     <br>
 
-    <ion-list>
+    <ion-list ng-show="searchResult.length">
       <a class="item item-thumbnail-left" href="#/contacts/{{contact.id}}" ng-repeat="contact in contacts">
+        <img src="cover.jpg">
+        <h2>Name</h2>
+        <p>phone number</p>
+        <p>gender</p>
+        <p>age</p>
+        <p>rating</p>
+      </a>
+    </ion-list>
+
+    <ion-list ng-show="searchResult.length">
+      <a class="item item-thumbnail-left" href="#/contacts/{{contact.id}}" ng-repeat="contact in searchResult">
         <img src="cover.jpg">
         <h2>Name</h2>
         <p>phone number</p>

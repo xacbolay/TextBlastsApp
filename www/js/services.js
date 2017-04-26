@@ -1,5 +1,43 @@
-angular.module('starter.services', [])
+angular.module('starter.services', ['ngStorage'])
 
+.factory('AuthService', function($localStorage, $state, $http) {
+  this.authorize = function() {
+    if ($state.is('login')) {
+      if ($localStorage.settings.user) $state.go('/');
+    } else {
+      if (!$localStorage.settings.user) $state.go('login');
+    }
+  };
+  this.header = function(name, value) {
+    $http.defaults.headers.common[name] = value;
+  };
+
+  return {
+    authorize: this.authorize
+  };
+})
+
+.factory('tokenInterceptor', function ($q) {
+  return {
+    response: function (response) {
+      // do something on success
+      if(response.headers()['content-type'] === "application/json; charset=utf-8"){
+        // Validate response, if not ok reject
+        var data = examineJSONResponse(response); // assumes this function is available
+
+        if(!data)
+          return $q.reject(response);
+        }
+        return response;
+    },
+    responseError: function (response) {
+      // do something on error
+      return $q.reject(response);
+    }
+  };
+});
+
+/**
 .factory('Chats', function() {
   // Might use a resource here that returns a JSON array
 
@@ -47,4 +85,5 @@ angular.module('starter.services', [])
       return null;
     }
   };
-});
+})
+**/

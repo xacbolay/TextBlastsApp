@@ -11,7 +11,7 @@ angular.module('starter', [
   'starter.services'
 ])
 
-.run(function($ionicPlatform) {
+.run(function($ionicPlatform, $http, $localStorage) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -24,10 +24,15 @@ angular.module('starter', [
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
     }
+
+    // User token for API middleware.
+    $http.defaults.headers.common['token'] = $localStorage.settings.user.token;
   });
 })
 
-.config(function($stateProvider, $urlRouterProvider) {
+.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
+  //
+  $httpProvider.interceptors.push('tokenInterceptor');
 
   // Ionic uses AngularUI Router which uses the concept of states
   // Learn more here: https://github.com/angular-ui/ui-router
@@ -58,7 +63,6 @@ angular.module('starter', [
     controller: 'ContactsController'
   })
 
-  // Login
   .state('login', {
     url: '/login',
     templateUrl: 'templates/login.html',

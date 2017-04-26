@@ -8,7 +8,8 @@ angular.module('starter.controllers', ['ngStorage'])
   //});
 
 //  Login Controller
-.controller('AuthController', function($scope, $rootScope, $stateParams, $http, $localStorage) {
+.controller('AuthController', function($scope, $rootScope, $state, $http, $localStorage, AuthService) {
+  AuthService.authorize();
   $scope.user = {};
   $scope.loading = false;
 
@@ -17,9 +18,10 @@ angular.module('starter.controllers', ['ngStorage'])
     $scope.loading = true;
     $http.post(this.apiUrl + '/login', $scope.user).then(
       function success(response) {
-        // body...
         $localStorage.settings.user = response.user;
-        $stateParams.go('contacts');
+        // User token for API middleware.
+        AuthService.header('token', $localStorage.settings.user.token);
+        $state.go('contacts');
       },
       function fail(response) {
         // body...
@@ -29,11 +31,12 @@ angular.module('starter.controllers', ['ngStorage'])
   };
   $rootScope.logOut = function() {
     $localStorage.settings.user = null;
-    $stateParams.go('login');
+    $state.go('login');
   };
 })
 
-.controller('ContactsController', function($scope, $filter, $ionicSideMenuDelegate) {
+.controller('ContactsController', function($scope, $filter, $ionicSideMenuDelegate, $ionicHistory, AuthService) {
+  AuthService.authorize();
   $scope.contacts = [
     {name: 'david'}, 
     {name: 'david'},
@@ -43,17 +46,41 @@ angular.module('starter.controllers', ['ngStorage'])
     {name: 'david'},
     {name: 'david'}
   ];
-  $scope.searchData = '';
+  $scope.contact = {};
+  $scope.searchData = null;
+  $scope.searchResult = [];
   $scope.orderByType;
 
+  $scope.sendMessage = function() {
+    // body
+  };
+  $scope.fetchContacts = function() {
+    // body...
+  };
+  $scope.redirectBack = function() {
+    $ionicHistory.goBack();
+  };
   $scope.toggleMenu = function() {
     $ionicSideMenuDelegate.toggleLeft();
   };
-  $scope.findByName = function() {
-    // body...
+  this.findBy = function() {
+    if (typeof $scope.searchData == 'string' && $scope.searchData.length) {
+
+    } else if (typeof $scope.searchData == 'string') {
+      this.findByName();
+    } else if (typeof $scope.searchData == 'number') {
+      this.findByPhone();
+    }
   };
-  $scope.findByPhone = function() {
-    // body...
+  this.findByName = function() {
+    $scope.searchResult = $scope.contacts.filter(function(contact) {
+      return contact.name.search($scope.searchData);
+    });
+  };
+  this.findByPhone = function() {
+    $scope.searchResult = $scope.contacts.filter(function(contact) {
+      return contact.phone == $scope.searchData;
+    });
   };
   $scope.orderByRating = function() {
     $filter('orderBy')($scope.contacts, 'name');
