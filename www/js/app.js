@@ -39,24 +39,30 @@ angular.module('starter', [
 
   $stateProvider
 
-  // Login
-  .state('login', {
-    url: '/login',
-    templateUrl: 'templates/login.html',
-    controller: 'AuthController'
-  })
-
   // Conctacts
   .state('contacts', {
-    url: '/contacts',
+    url: '/',
     templateUrl: 'templates/contacts.html',
+    controller: 'ContactsController'
+  })
+
+  .state('contacts-add', {
+    url: '/contacts/add',
+    templateUrl: 'templates/contact-add.html',
     controller: 'ContactsController'
   })
 
   .state('contacts-detail', {
     url: '/contacts/:contactId',
-    templateUrl: 'templates/contacts.html',
+    templateUrl: 'templates/contact-detail.html',
     controller: 'ContactsController'
+  })
+
+  // Login
+  .state('login', {
+    url: '/login',
+    templateUrl: 'templates/login.html',
+    controller: 'AuthController'
   })
 
   /**

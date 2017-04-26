@@ -1,8 +1,13 @@
 <ion-view view-title="Contacts">
-  <ion-nav-buttons side="primary">
+  <ion-nav-buttons side="left">
     <button class="button" ng-click="toggleMenu()" style="border:0">
       <i class="icon ion-navicon-round"></i>
     </button>
+  </ion-nav-buttons>
+  <ion-nav-buttons side="right">
+    <a class="button" ng-click="" href="#/contacts/add" style="border:0">
+      <i class="icon ion-plus-round"></i>
+    </a>
   </ion-nav-buttons>
 
   <ion-content>
@@ -13,24 +18,24 @@
 
     <label class="item item-input item-select">
       <div class="input-label">Order by</div>
-      <select>
-        <option selected>Age</option>
+      <select ng-model="orderByType">
+        <option>Age</option>
         <option>Gender</option>
         <option>Rating</option>
       </select>
     </label>
+    
+    <br>
 
     <ion-list>
-      <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="chat in chats" type="item-text-wrap" href="#/tab/chats/{{chat.id}}">
-        <img ng-src="{{chat.face}}">
-        <h2>{{chat.name}}</h2>
-        <p>{{chat.lastText}}</p>
-        <i class="icon ion-chevron-right icon-accessory"></i>
-
-        <ion-option-button class="button-assertive" ng-click="remove(chat)">
-          Delete
-        </ion-option-button>
-      </ion-item>
+      <a class="item item-thumbnail-left" href="#/contacts/{{contact.id}}" ng-repeat="contact in contacts">
+        <img src="cover.jpg">
+        <h2>Name</h2>
+        <p>phone number</p>
+        <p>gender</p>
+        <p>age</p>
+        <p>rating</p>
+      </a>
     </ion-list>
   </ion-content>
 </ion-view>

@@ -1,0 +1,45 @@
+<ion-view view-title="New contact">
+  <ion-content class="padding">
+    <div class="list">
+      <label class="item item-input item-stacked-label">
+        <span class="input-label">Full name</span>
+        <input type="text" ng-model="">
+      </label>
+
+      <label class="item item-input item-stacked-label">
+        <span class="input-label">Phone number</span>
+        <input type="number" ng-model="">
+      </label>
+
+      <label class="item item-input item-stacked-label">
+        <span class="input-label">Age</span>
+        <input type="number" ng-model="">
+      </label>
+
+      <label class="item item-input item-select">
+        <div class="input-label">Gender</div>
+        <select>
+          <option>Female</option>
+          <option>Male</option>
+        </select>
+      </label>
+
+      <label class="item item-input item-stacked-label">
+        <span class="input-label">Rating <span class="input-label" ng-model=""></span> of 10</span>
+
+      </label>
+      <div class="list">
+        <div class="item range range-positive">
+          <i class="icon ion-minus"></i>          
+          <input type="range" name="volume" min="0" max="10" value="0">
+          <i class="icon ion-plus"></i>
+        </div>
+      </div>
+
+      <button class="button button-full button-positive" ng-disabled="loading" ng-click="sendMessage()">
+        <span ng-show="!loading">add contact</span>
+        <ion-spinner icon="lines" ng-show="loading"></ion-spinner>
+      </button>
+    </div>
+  </ion-content>
+</ion-view>

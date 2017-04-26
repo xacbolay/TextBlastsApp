@@ -8,7 +8,7 @@ angular.module('starter.controllers', ['ngStorage'])
   //});
 
 //  Login Controller
-.controller('AuthController', function($scope, $stateParams, $http, $localStorage) {
+.controller('AuthController', function($scope, $rootScope, $stateParams, $http, $localStorage) {
   $scope.user = {};
   $scope.loading = false;
 
@@ -34,8 +34,17 @@ angular.module('starter.controllers', ['ngStorage'])
 })
 
 .controller('ContactsController', function($scope, $filter, $ionicSideMenuDelegate) {
-  $scope.contacts = [];
+  $scope.contacts = [
+    {name: 'david'}, 
+    {name: 'david'},
+    {name: 'david'},
+    {name: 'david'},
+    {name: 'david'},
+    {name: 'david'},
+    {name: 'david'}
+  ];
   $scope.searchData = '';
+  $scope.orderByType;
 
   $scope.toggleMenu = function() {
     $ionicSideMenuDelegate.toggleLeft();
