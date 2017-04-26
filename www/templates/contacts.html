@@ -1,0 +1,36 @@
+<ion-view view-title="Contacts">
+  <ion-nav-buttons side="primary">
+    <button class="button" ng-click="toggleMenu()" style="border:0">
+      <i class="icon ion-navicon-round"></i>
+    </button>
+  </ion-nav-buttons>
+
+  <ion-content>
+    <label class="item item-input">
+      <i class="icon ion-search placeholder-icon"></i>
+      <input type="text" placeholder="Search">
+    </label>
+
+    <label class="item item-input item-select">
+      <div class="input-label">Order by</div>
+      <select>
+        <option selected>Age</option>
+        <option>Gender</option>
+        <option>Rating</option>
+      </select>
+    </label>
+
+    <ion-list>
+      <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="chat in chats" type="item-text-wrap" href="#/tab/chats/{{chat.id}}">
+        <img ng-src="{{chat.face}}">
+        <h2>{{chat.name}}</h2>
+        <p>{{chat.lastText}}</p>
+        <i class="icon ion-chevron-right icon-accessory"></i>
+
+        <ion-option-button class="button-assertive" ng-click="remove(chat)">
+          Delete
+        </ion-option-button>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>

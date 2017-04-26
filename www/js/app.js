@@ -35,7 +35,7 @@ angular.module('starter', [
   // Each state's controller can be found in controllers.js
   
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/tab/contacts');
+  $urlRouterProvider.otherwise('/contacts');
 
   $stateProvider
 
@@ -43,9 +43,23 @@ angular.module('starter', [
   .state('login', {
     url: '/login',
     templateUrl: 'templates/login.html',
-    controller: 'LoginController'
+    controller: 'AuthController'
   })
 
+  // Conctacts
+  .state('contacts', {
+    url: '/contacts',
+    templateUrl: 'templates/contacts.html',
+    controller: 'ContactsController'
+  })
+
+  .state('contacts-detail', {
+    url: '/contacts/:contactId',
+    templateUrl: 'templates/contacts.html',
+    controller: 'ContactsController'
+  })
+
+  /**
   // setup an abstract state for the tabs directive
   .state('tab', {
     url: '/tab',
@@ -54,16 +68,6 @@ angular.module('starter', [
   })
 
   // Each tab has its own nav history stack:
-
-  .state('tab.contacts', {
-    url: '/contacts',
-    views: {
-      'tab-contacts': {
-        templateUrl: 'templates/tab-contacts.html',
-        controller: 'ContactsController'
-      }
-    }
-  })
 
   .state('tab.chats', {
       url: '/chats',
@@ -93,5 +97,6 @@ angular.module('starter', [
       }
     }
   });
+  **/
 
 });

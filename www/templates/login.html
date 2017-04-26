@@ -14,9 +14,9 @@
         <span class="input-label">Password</span>
         <input type="password" ng-model="user.password">
       </label>      
-      <button class="button button-full button-positive" ng-click="login()">
+      <button class="button button-full button-positive" ng-disabled="loading" ng-click="signIn()">
         <span ng-show="!loading">Sign in</span>
-        <i class="icon ion-star" ng-show="loading"></i>
+        <ion-spinner icon="lines" ng-show="loading"></ion-spinner>
       </button>
     </div>
 

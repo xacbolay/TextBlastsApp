@@ -1,18 +1,25 @@
 angular.module('starter.controllers', ['ngStorage'])
+// With the new view caching in Ionic, Controllers are only called
+  // when they are recreated or on app start, instead of every page change.
+  // To listen for when this page is active (for example, to refresh data),
+  // listen for the $ionicView.enter event:
+  //
+  //$scope.$on('$ionicView.enter', function(e) {
+  //});
 
 //  Login Controller
-.controller('LoginController', function($scope, $stateParams, $http, $localStorage) {
+.controller('AuthController', function($scope, $stateParams, $http, $localStorage) {
   $scope.user = {};
   $scope.loading = false;
 
-  $scope.login = function() {
+  $scope.signIn = function() {
     this.apiUrl = '';
     $scope.loading = true;
     $http.post(this.apiUrl + '/login', $scope.user).then(
       function success(response) {
         // body...
         $localStorage.settings.user = response.user;
-        $stateParams.go('home');
+        $stateParams.go('contacts');
       },
       function fail(response) {
         // body...
@@ -20,33 +27,33 @@ angular.module('starter.controllers', ['ngStorage'])
       }                                              
     );
   };
+  $rootScope.logOut = function() {
+    $localStorage.settings.user = null;
+    $stateParams.go('login');
+  };
 })
 
-.controller('ContactsController', function($scope) {
+.controller('ContactsController', function($scope, $filter, $ionicSideMenuDelegate) {
   $scope.contacts = [];
-})
+  $scope.searchData = '';
 
-.controller('ChatsCtrl', function($scope, Chats) {
-  // With the new view caching in Ionic, Controllers are only called
-  // when they are recreated or on app start, instead of every page change.
-  // To listen for when this page is active (for example, to refresh data),
-  // listen for the $ionicView.enter event:
-  //
-  //$scope.$on('$ionicView.enter', function(e) {
-  //});
-  
-  $scope.chats = Chats.all();
-  $scope.remove = function(chat) {
-    Chats.remove(chat);
+  $scope.toggleMenu = function() {
+    $ionicSideMenuDelegate.toggleLeft();
   };
-})
-
-.controller('ChatDetailCtrl', function($scope, $stateParams, Chats) {
-  $scope.chat = Chats.get($stateParams.chatId);
-})
-
-.controller('AccountCtrl', function($scope) {
-  $scope.settings = {
-    enableFriends: true
+  $scope.findByName = function() {
+    // body...
   };
+  $scope.findByPhone = function() {
+    // body...
+  };
+  $scope.orderByRating = function() {
+    $filter('orderBy')($scope.contacts, 'name');
+  };
+  $scope.orderByGender = function() {
+    $filter('orderBy')($scope.contacts, 'gender');
+  };
+  $scope.orderByAge = function() {
+    $filter('orderBy')($scope.contacts, 'age');
+  };
+
 });
