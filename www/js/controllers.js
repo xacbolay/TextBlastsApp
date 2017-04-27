@@ -34,7 +34,7 @@ angular.module('starter.controllers', ['ngStorage'])
     $localStorage.settings = null;
     $ionicHistory.clearHistory();
     $ionicHistory.clearCache();    
-    AuthService.redirect('contacts');
+    AuthService.redirect('login');
   };
 })
 
@@ -88,7 +88,6 @@ angular.module('starter.controllers', ['ngStorage'])
   $scope.contact = AuthService.user().phoneList.find(function(contact) {
     return contact.client_id == $stateParams.contactId;
   });
-  console.log($scope.contact);
   $scope.message = {};
   $scope.shortlink = null;
   $scope.loading = false;
@@ -108,6 +107,7 @@ angular.module('starter.controllers', ['ngStorage'])
 
   $scope.addContact = function() {
     $scope.loading = true; 
+    $scope.contact.client_id = AuthService.user().client_data[0].id;
     $http.post($rootScope.apiUrl + '/savephone', $scope.contact).then(
       function success(response) {
         $scope.loading = false; 
@@ -154,7 +154,7 @@ angular.module('starter.controllers', ['ngStorage'])
   $scope.sendMessage = function() {
     $scope.loading = true;
     $scope.message.body += "" + $scope.shortlink;
-    $scope.message.client_id = AuthService.user().client_data[0].client_id;
+    $scope.message.client_id = AuthService.user().client_data[0].id;
     $http.post($rootScope.apiUrl + '/sendsms', $scope.message).then(
       function success(response) {
         $scope.loading = false; 
