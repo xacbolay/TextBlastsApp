@@ -41,15 +41,8 @@ angular.module('starter.controllers', ['ngStorage'])
 .controller('ContactsController', function($scope, $rootScope, $filter, $ionicSideMenuDelegate, AuthService) {
   AuthService.authorize();
   $scope.contacts = AuthService.user().phoneList;
-  $scope.contact = {};
   $scope.searchData = null;
   $scope.searchResult = [];
-  $scope.orderByTypes = [
-    {value: 'name', tag: 'Name'},
-    {value: 'age', tag: 'Age'},
-    {value: 'gender', tag: 'Gender'},
-    {value: 'rating', tag: 'Rating'},
-  ];
   $scope.orderByType = null;
 
   $scope.toggleMenu = function() {

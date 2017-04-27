@@ -4,11 +4,6 @@
       <i class="icon ion-navicon-round"></i>
     </button>
   </ion-nav-buttons>
-  <ion-nav-buttons side="right">
-    <a class="button" href="#/contacts/add" menu-close style="border:0">
-      <i class="icon ion-plus-round"></i>
-    </a>
-  </ion-nav-buttons>
 
   <div class="bar bar-subheader">
     <h2 class="title">
@@ -22,7 +17,11 @@
   <ion-content style="margin-top: 50px">
     <label class="item item-input item-select">
       <div class="input-label">Order by</div>
-      <select ng-model="orderByType" ng-options="type.value as type.tag for type in orderByTypes" ng-change="orderBy(orderByType)">
+      <select ng-model="orderByType" ng-change="orderBy(orderByType)">
+        <option value="name">Name</option>
+        <option value="age">Age</option>
+        <option value="gender">Gender</option>
+        <option value="rating">Rating</option>
       </select>
     </label>
 
