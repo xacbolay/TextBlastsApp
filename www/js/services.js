@@ -1,9 +1,9 @@
 angular.module('starter.services', ['ngStorage'])
 
-.factory('AuthService', function($localStorage, $state, $http) {
+.factory('AuthService', function($localStorage, $state, $http, $rootScope) {
   this.authorize = function() {
     if ($state.is('login')) {
-      if ($localStorage.settings) $state.go('/');
+      if ($localStorage.settings) $state.go('contacts');
     } else {
       if (!$localStorage.settings) $state.go('login');
     }
@@ -11,9 +11,18 @@ angular.module('starter.services', ['ngStorage'])
   this.header = function(name, value) {
     $http.defaults.headers.common[name] = value;
   };
+  this.user = function() {
+    return $rootScope.user;
+  };
+  this.setUser = function(data) {
+    $rootScope.user = data;
+  };
 
   return {
-    authorize: this.authorize
+    authorize: this.authorize,
+    header: this.header,
+    user: this.user,
+    setUser: this.setUser
   };
 })
 
@@ -21,17 +30,19 @@ angular.module('starter.services', ['ngStorage'])
   return {
     response: function (response) {
       // do something on success
-      if(response.headers()['content-type'] === "application/json; charset=utf-8"){
+      if(response.headers()['token'] === "false"){
         // Validate response, if not ok reject
-        var data = examineJSONResponse(response); // assumes this function is available
+        // FORCE LOGOUT
 
-        if(!data)
-          return $q.reject(response);
-        }
-        return response;
+        if(!data) return $q.reject(response);
+      }
+      // Return the response or promise.
+      return response || $q.when(response);
     },
     responseError: function (response) {
       // do something on error
+      
+      // Return the promise rejection.
       return $q.reject(response);
     }
   };

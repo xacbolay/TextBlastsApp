@@ -39,16 +39,24 @@
     <ion-nav-bar class="bar-stable">
     </ion-nav-bar>
 
-    <ion-side-menus>
+    <ion-side-menus ng-controller="AuthController">
       <!-- Left menu -->
       <ion-side-menu side="left">
         <div class="list" style="margin-top: 50px">
-          <a class="item item-icon-left" href="#">
-            <i class="icon ion-reply"></i> Change venue
+          <a class="item item-icon-left">
+            <i class="icon ion-ios-person"></i> {{ user.client_data[0].name }}
           </a>
 
-          <a class="item item-icon-left" ng-click="logOut()">
-            <i class="icon ion-power"></i> Log out
+          <a class="item item-icon-left" href="#/venue" menu-close>
+            <i class="icon ion-ios-gear"></i> Client settings
+          </a>
+
+          <a class="item item-icon-left" href="#/quickmessage" menu-close>
+            <i class="icon ion-ios-paperplane"></i> Quick message
+          </a>
+
+          <a class="item item-icon-left" ng-click="logOut()" menu-close>
+            <i class="icon ion-log-out"></i> Log out
           </a>
         </div>
       </ion-side-menu>

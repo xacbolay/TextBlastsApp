@@ -12,7 +12,7 @@ angular.module('starter', [
   'ngStorage'
 ])
 
-.run(function($ionicPlatform, $http, $localStorage) {
+.run(function($ionicPlatform, $http, $localStorage, $rootScope, AuthService) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -26,15 +26,18 @@ angular.module('starter', [
       StatusBar.styleDefault();
     }
 
-    // User token for API middleware.
+    // Set user token for all http requests and global scope model user.
     if ($localStorage.settings) {
       $http.defaults.headers.common['token'] = $localStorage.settings.user.token;
-    }    
+      AuthService.setUser($localStorage.settings.user);
+    }
+
+    $rootScope.apiUrl = '//2night.net/api/v1/tb';
   });
 })
 
 .config(function($stateProvider, $urlRouterProvider, $httpProvider) {
-  //
+  // Global http interceptor User token for API middleware response.
   //$httpProvider.interceptors.push('tokenInterceptor');
 
   // Ionic uses AngularUI Router which uses the concept of states
@@ -44,10 +47,9 @@ angular.module('starter', [
   
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/');
-
+  // States manager.
   $stateProvider
 
-  // Conctacts
   .state('contacts', {
     url: '/',
     templateUrl: 'templates/contacts.html',
@@ -57,13 +59,25 @@ angular.module('starter', [
   .state('contacts-add', {
     url: '/contacts/add',
     templateUrl: 'templates/contact-add.html',
-    controller: 'ContactsController'
+    controller: 'ContactAddController'
   })
 
   .state('contacts-detail', {
     url: '/contacts/:contactId',
     templateUrl: 'templates/contact-detail.html',
-    controller: 'ContactsController'
+    controller: 'ContactDetailController'
+  })
+
+  .state('venue', {
+    url: '/venue',
+    templateUrl: 'templates/venue.html',
+    controller: 'VenueController'
+  })
+
+  .state('quick-message', {
+    url: '/quickmessage',
+    templateUrl: 'templates/quick-message.html',
+    controller: 'QuickMessageController'
   })
 
   .state('login', {

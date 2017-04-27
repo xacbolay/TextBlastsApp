@@ -8,57 +8,52 @@ angular.module('starter.controllers', ['ngStorage'])
   //});
 
 //  Login Controller
-.controller('AuthController', function($scope, $rootScope, $state, $http, $localStorage, AuthService) {
+.controller('AuthController', function($scope, $rootScope, $ionicHistory, $state, $http, $localStorage, AuthService) {
   AuthService.authorize();
-  $scope.user = {};
+  $scope.login = {};
   $scope.loading = false;
 
   $scope.signIn = function() {
-    this.apiUrl = '';
     $scope.loading = true;
-    $http.post(this.apiUrl + '/login', $scope.user).then(
+    $http.post($rootScope.apiUrl + '/login', $scope.login).then(
       function success(response) {
-        $localStorage.settings.user = response.user;
-        // User token for API middleware.
-        AuthService.header('token', $localStorage.settings.user.token);
+        console.log(response);
+        $localStorage.settings = {user: response.data};
+        AuthService.setUser($localStorage.settings.user);
+        AuthService.header('token', AuthService.user().AppToken);
         $state.go('contacts');
       },
       function fail(response) {
         // body...
+        console.log(response);
         $scope.loading = false;
       }                                              
     );
   };
-  $rootScope.logOut = function() {
-    $localStorage.settings.user = null;
+  $scope.logOut = function() {
+    $localStorage.settings = null;
+    $ionicHistory.clearHistory();
+    $ionicHistory.clearCache();    
     $state.go('login');
   };
 })
 
-.controller('ContactsController', function($scope, $filter, $ionicSideMenuDelegate, $ionicHistory, AuthService) {
-  //AuthService.authorize();
-  $scope.contacts = [
-    {name: 'david', phone: 12345, age: 18, gender: 'female', rating: 10}, 
-    {name: 'victor', phone: 12345, age: 21, gender: 'male', rating: 5},
-    {name: 'david miranda', phone: 12345, age: 24, gender: 'female', rating: 1},
-    {name: 'david', phone: 12333, age: 22, gender: 'male', rating: 5},
-    {name: 'david alexader', phone: 12345, age: 24, gender: 'female', rating: 10},
-    {name: 'alexander david', phone: 22222, age: 24, gender: 'male', rating: 10},
-    {name: 'david', phone: 12345, age: 28, gender: 'female', rating: 2}
-  ];
+.controller('ContactsController', function($scope, $rootScope, $filter, $ionicSideMenuDelegate, $state, AuthService) {
+  AuthService.authorize();
+  $scope.contacts = AuthService.user().phoneList;
   $scope.contact = {};
   $scope.searchData = null;
   $scope.searchResult = [];
+  $scope.orderByTypes = [
+    {value: 'name', tag: 'Name'},
+    {value: 'age', tag: 'Age'},
+    {value: 'gender', tag: 'Gender'},
+    {value: 'rating', tag: 'Rating'},
+  ];
   $scope.orderByType = null;
 
-  $scope.sendMessage = function() {
-    // body
-  };
-  $scope.fetchContacts = function() {
-    // body...
-  };
   $scope.redirectBack = function() {
-    $ionicHistory.goBack();
+    $state.go('contacts');
   };
   $scope.toggleMenu = function() {
     $ionicSideMenuDelegate.toggleLeft();
@@ -80,26 +75,82 @@ angular.module('starter.controllers', ['ngStorage'])
       return contact.phone == $scope.searchData;
     });
   };
-  $scope.orderBy = function() {
-    if ($scope.orderByType.includes('Age')) {
-      console.log('age');
-      orderByAge();
-    } else if ($scope.orderByType.includes('Gender')) {
-      console.log('gender');
-      orderByGender();
-    } else if ($scope.orderByType.includes('Rating')) {
-      console.log('rating');
-      orderByRating();
+  $scope.orderBy = function(orderByType) {
+    switch (orderByType) {
+      case 'name':
+        $filter('orderBy')($scope.contacts, 'name');
+        break;
+      case 'age':
+        $filter('orderBy')($scope.contacts, 'age');
+        break;
+      case 'gender':
+        $filter('orderBy')($scope.contacts, 'gender');
+        break;
+      case 'rating':
+        $filter('orderBy')($scope.contacts, 'rating');
+        break;
     }
   };
-  var orderByRating = function() {
-    $filter('orderBy')($scope.contacts, 'name');
-  };
-  var orderByGender = function() {
-    $filter('orderBy')($scope.contacts, 'gender');
-  };
-  var orderByAge = function() {
-    $filter('orderBy')($scope.contacts, 'age');
-  };
 
+})
+
+.controller('ContactDetailController', function($scope, $state, $stateParams, $ionicHistory, AuthService) {
+  //$ionicSideMenuDelegate.toggleLeft();
+  AuthService.authorize();
+  $scope.contact = AuthService.user().phoneList.filter(function(contact) {
+    return contact.client_id == $stateParams.contactId;
+  });
+  console.log($scope.contact);
+  $scope.message = {};
+  $scope.shortlink = null;
+  $scope.loading = false;
+
+  $scope.sendMessage = function() {
+    // body...
+  };
+  $scope.redirectBack = function() {
+    $state.go('contacts');
+  };
+})
+
+.controller('ContactAddController', function($scope, $state, $ionicHistory, AuthService) {
+  AuthService.authorize();
+  $scope.contact = {};
+  $scope.loading = false;
+
+  $scope.addContact = function() {
+    // body...
+  };
+  $scope.redirectBack = function() {
+    $state.go('contacts');
+  };
+})
+
+.controller('VenueController', function($scope, $state, $ionicHistory, AuthService) {
+  AuthService.authorize();
+  $scope.venue = {};
+  $scope.loading = false;
+
+  $scope.changeVenue = function() {
+    // body...
+  };
+  $scope.redirectBack = function() {
+    $state.go('contacts');
+  };
+})
+
+.controller('QuickMessageController', function($scope, $state, $ionicHistory, AuthService) {
+  //$ionicSideMenuDelegate.toggleLeft();
+  AuthService.authorize();
+  $scope.message = {};
+  $scope.venue = {};
+  $scope.shortlink = null;
+  $scope.loading = false;
+
+  $scope.sendMessage = function() {
+    // body...
+  };
+  $scope.redirectBack = function() {
+    $state.go('contacts');
+  };
 });

@@ -1,0 +1,28 @@
+<ion-view view-title="Venue information">
+  <ion-nav-buttons side="left">
+    <button class="button" ng-click="redirectBack()" style="border:0">
+      <i class="icon ion-chevron-left"></i>
+    </button>
+  </ion-nav-buttons>
+
+  <ion-content class="padding">
+    <div class="list card">
+
+      <div class="item item-body">
+        <h2><i class="icon ion-ios-star"></i> <strong>{{ user.client_data[0].name }}</strong></h2>
+        <p><strong>Phone number available:</strong> {{ user.client_data[0].phone }}</p>
+      </div>
+
+      <label class="item item-input item-select">
+        <div class="input-label">Change venue</div>
+        <select ng-model="message.shortlink" ng-options="client.id as client.name for client in user.client_data">
+        </select>
+      </label>
+
+      <button class="button button-full button-positive" ng-disabled="loading" ng-click="changeVenue()">
+        <span ng-show="!loading">Submit</span>
+        <ion-spinner icon="lines" ng-show="loading"></ion-spinner>
+      </button>
+    </div>
+  </ion-content>
+</ion-view>

@@ -5,7 +5,7 @@
     </button>
   </ion-nav-buttons>
   <ion-nav-buttons side="right">
-    <a class="button" ng-click="" href="#/contacts/add" style="border:0">
+    <a class="button" href="#/contacts/add" menu-close style="border:0">
       <i class="icon ion-plus-round"></i>
     </a>
   </ion-nav-buttons>
@@ -22,37 +22,29 @@
   <ion-content style="margin-top: 50px">
     <label class="item item-input item-select">
       <div class="input-label">Order by</div>
-      <select ng-model="orderByType" ng-change="orderBy()">
-        <option>Age</option>
-        <option>Gender</option>
-        <option>Rating</option>
+      <select ng-model="orderByType" ng-options="type.value as type.tag for type in orderByTypes" ng-change="orderBy(orderByType)">
       </select>
     </label>
 
-    <p>Number: {{ searchResult.length }}</p>
-    <p>searchResult type: {{ searchResult }}</p>
-    <p>Data : {{ searchData }}</p>
-    <p>order by type : {{ orderByType }}</p>
-
     <ion-list ng-show="!searchResult.length">
-      <a class="item item-thumbnail-left" href="#/contacts/{{contact.id}}" ng-repeat="contact in contacts">
+      <a class="item item-thumbnail-left" href="#/contacts/{{contact.client_id}}" ng-repeat="contact in contacts" menu-close>
         <img src="cover.jpg">
-        <h2>Name {{ contact.name }}</h2>
-        <p>phone number {{ contact.phone }}</p>
-        <p>gender {{ contact.gender }}</p>
-        <p>age {{ contact.age }}</p>
-        <p>rating {{ contact.rating }}</p>
+        <h2><strong>{{ contact.name }}</strong></h2>
+        <p>#{{ contact.phone }}</p>
+        <p>Gender: {{ contact.gender }}</p>
+        <p>Age: {{ contact.age }}</p>
+        <p>Rating: {{ contact.rating }}</p>
       </a>
     </ion-list>
 
     <ion-list ng-show="searchResult.length">
-      <a class="item item-thumbnail-left" href="#/contacts/{{contact.id}}" ng-repeat="contact in searchResult">
+      <a class="item item-thumbnail-left" href="#/contacts/{{contact.client_id}}" ng-repeat="contact in searchResult" menu-close>
         <img src="cover.jpg">
-        <h2>Name {{ contact.name }}</h2>
-        <p>phone number {{ contact.phone }}</p>
-        <p>gender {{ contact.gender }}</p>
-        <p>age {{ contact.age }}</p>
-        <p>rating {{ contact.rating }}</p>
+        <h2><strong>{{ contact.name }}</strong></h2>
+        <p>#{{ contact.phone }}</p>
+        <p>Gender: {{ contact.gender }}</p>
+        <p>Age: {{ contact.age }}</p>
+        <p>Rating: {{ contact.rating }}</p>
       </a>
     </ion-list>
   </ion-content>
