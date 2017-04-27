@@ -17,12 +17,16 @@ angular.module('starter.services', ['ngStorage'])
   this.setUser = function(data) {
     $rootScope.user = data;
   };
+  this.redirect = function(name, params) {
+    $state.go(name, params);
+  };
 
   return {
     authorize: this.authorize,
     header: this.header,
     user: this.user,
-    setUser: this.setUser
+    setUser: this.setUser,
+    redirect: this.redirect
   };
 })
 

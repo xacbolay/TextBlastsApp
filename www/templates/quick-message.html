@@ -14,7 +14,7 @@
 
       <label class="item item-input item-select">
         <div class="input-label">Shortlinks</div>
-        <select ng-model="message.shortlink" ng-options="shortlink.event_title as shortlink.event_title for shortlink in user.eventsData">
+        <select ng-model="shortlink" ng-options="shortlink.event_title as shortlink.event_title for shortlink in user.eventsData">
         </select>
       </label>
 
@@ -24,7 +24,7 @@
         <p>{{ message.body.length }}/<strong>{{ (140 - shortlink.length) }}</strong></p>
       </label>
 
-      <button class="button button-full button-positive" ng-disabled="loading" ng-click="sendMessage()">
+      <button class="button button-full button-positive" ng-disabled="loading || (message.body.length + shortlink.length) > 140" ng-click="sendMessage()">
         <span ng-show="!loading">Send message</span>
         <ion-spinner icon="lines" ng-show="loading"></ion-spinner>
       </button>

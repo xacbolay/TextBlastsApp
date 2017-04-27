@@ -8,7 +8,7 @@ angular.module('starter.controllers', ['ngStorage'])
   //});
 
 //  Login Controller
-.controller('AuthController', function($scope, $rootScope, $ionicHistory, $state, $http, $localStorage, AuthService) {
+.controller('AuthController', function($scope, $rootScope, $ionicHistory, $http, $localStorage, AuthService) {
   AuthService.authorize();
   $scope.login = {};
   $scope.loading = false;
@@ -21,7 +21,7 @@ angular.module('starter.controllers', ['ngStorage'])
         $localStorage.settings = {user: response.data};
         AuthService.setUser($localStorage.settings.user);
         AuthService.header('token', AuthService.user().AppToken);
-        $state.go('contacts');
+        AuthService.redirect('contacts');
       },
       function fail(response) {
         // body...
@@ -34,11 +34,11 @@ angular.module('starter.controllers', ['ngStorage'])
     $localStorage.settings = null;
     $ionicHistory.clearHistory();
     $ionicHistory.clearCache();    
-    $state.go('login');
+    AuthService.redirect('contacts');
   };
 })
 
-.controller('ContactsController', function($scope, $rootScope, $filter, $ionicSideMenuDelegate, $state, AuthService) {
+.controller('ContactsController', function($scope, $rootScope, $filter, $ionicSideMenuDelegate, AuthService) {
   AuthService.authorize();
   $scope.contacts = AuthService.user().phoneList;
   $scope.contact = {};
@@ -52,9 +52,6 @@ angular.module('starter.controllers', ['ngStorage'])
   ];
   $scope.orderByType = null;
 
-  $scope.redirectBack = function() {
-    $state.go('contacts');
-  };
   $scope.toggleMenu = function() {
     $ionicSideMenuDelegate.toggleLeft();
   };
@@ -91,13 +88,11 @@ angular.module('starter.controllers', ['ngStorage'])
         break;
     }
   };
-
 })
 
-.controller('ContactDetailController', function($scope, $state, $stateParams, $ionicHistory, AuthService) {
-  //$ionicSideMenuDelegate.toggleLeft();
+.controller('ContactDetailController', function($scope, $rootScope, $stateParams, AuthService) {
   AuthService.authorize();
-  $scope.contact = AuthService.user().phoneList.filter(function(contact) {
+  $scope.contact = AuthService.user().phoneList.find(function(contact) {
     return contact.client_id == $stateParams.contactId;
   });
   console.log($scope.contact);
@@ -109,48 +104,75 @@ angular.module('starter.controllers', ['ngStorage'])
     // body...
   };
   $scope.redirectBack = function() {
-    $state.go('contacts');
+    AuthService.redirect('contacts');
   };
 })
 
-.controller('ContactAddController', function($scope, $state, $ionicHistory, AuthService) {
+.controller('ContactAddController', function($scope, $rootScope, $http, AuthService) {
   AuthService.authorize();
   $scope.contact = {};
   $scope.loading = false;
 
   $scope.addContact = function() {
-    // body...
+    $scope.loading = true; 
+    $http.post($rootScope.apiUrl + '/savephone', $scope.contact).then(
+      function success(response) {
+        $scope.loading = false; 
+        AuthService.redirect('contacts');
+      },
+      function fail(response) {
+        $scope.loading = false;
+      }
+    );
   };
   $scope.redirectBack = function() {
-    $state.go('contacts');
+    AuthService.redirect('contacts');
   };
 })
 
-.controller('VenueController', function($scope, $state, $ionicHistory, AuthService) {
+.controller('VenueController', function($scope, $rootScope, $http, AuthService) {
   AuthService.authorize();
-  $scope.venue = {};
+  $scope.venue = AuthService.user().client_data[0];
   $scope.loading = false;
 
   $scope.changeVenue = function() {
-    // body...
+    $scope.loading = true;
+    $http.post($rootScope.apiUrl + '/getlist', data).then(
+      function success(response) {
+        $scope.loading = false; 
+        AuthService.redirect('contacts');
+      },
+      function fail(response) {
+        $scope.loading = false;
+      }
+    );
   };
   $scope.redirectBack = function() {
-    $state.go('contacts');
+    AuthService.redirect('contacts');
   };
 })
 
-.controller('QuickMessageController', function($scope, $state, $ionicHistory, AuthService) {
-  //$ionicSideMenuDelegate.toggleLeft();
+.controller('QuickMessageController', function($scope, $rootScope, $http, AuthService) {
   AuthService.authorize();
   $scope.message = {};
-  $scope.venue = {};
   $scope.shortlink = null;
   $scope.loading = false;
 
   $scope.sendMessage = function() {
-    // body...
+    $scope.loading = true;
+    $scope.message.body += "" + $scope.shortlink;
+    $scope.message.client_id = AuthService.user().client_data[0].client_id;
+    $http.post($rootScope.apiUrl + '/sendsms', $scope.message).then(
+      function success(response) {
+        $scope.loading = false; 
+        AuthService.redirect('contacts');
+      },
+      function fail(response) {
+        $scope.loading = false;
+      }
+    );
   };
   $scope.redirectBack = function() {
-    $state.go('contacts');
+    AuthService.redirect('contacts');
   };
 });

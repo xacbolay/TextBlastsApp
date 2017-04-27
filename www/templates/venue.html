@@ -9,13 +9,13 @@
     <div class="list card">
 
       <div class="item item-body">
-        <h2><i class="icon ion-ios-star"></i> <strong>{{ user.client_data[0].name }}</strong></h2>
-        <p><strong>Phone number available:</strong> {{ user.client_data[0].phone }}</p>
+        <h2><i class="icon ion-ios-star"></i> <strong>{{ venue.name }}</strong></h2>
+        <p><strong>Phone number available:</strong> {{ venue.phone }}</p>
       </div>
 
       <label class="item item-input item-select">
         <div class="input-label">Change venue</div>
-        <select ng-model="message.shortlink" ng-options="client.id as client.name for client in user.client_data">
+        <select ng-model="client.id" ng-options="client.id as client.name for client in user.client_data">
         </select>
       </label>
 
