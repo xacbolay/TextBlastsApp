@@ -27,7 +27,7 @@
 
     <ion-list ng-show="!searchResult.length">
       <a class="item item-thumbnail-left" href="#/contacts/{{contact.id}}" ng-repeat="contact in contacts" menu-close>
-        <img src="cover.jpg">
+        <img src="">
         <h2><strong>{{ contact.name }}</strong></h2>
         <p>#{{ contact.phone }}</p>
         <p>Gender: {{ contact.gender }}</p>
@@ -38,7 +38,7 @@
 
     <ion-list ng-show="searchResult.length">
       <a class="item item-thumbnail-left" href="#/contacts/{{contact.id}}" ng-repeat="contact in searchResult" menu-close>
-        <img src="cover.jpg">
+        <img src="">
         <h2><strong>{{ contact.name }}</strong></h2>
         <p>#{{ contact.phone }}</p>
         <p>Gender: {{ contact.gender }}</p>

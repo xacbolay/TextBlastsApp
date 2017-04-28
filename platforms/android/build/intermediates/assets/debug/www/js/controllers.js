@@ -9,14 +9,16 @@ angular.module('starter.controllers', ['ngStorage'])
 
 //  Login Controller
 .controller('AuthController', function($scope, $rootScope, $ionicHistory, $http, $localStorage, AuthService) {
-  //AuthService.authorize();
+  AuthService.authorize();
   console.log('AuthController');
-  $scope.login = {};
-  $scope.loading = false;
+  console.log($localStorage);
+  $rootScope.login = {};
+  $rootScope.loading = false;
+  $rootScope.errors = null;
 
   $scope.signIn = function() {
-    $scope.loading = true;
-    $http.post($rootScope.apiUrl + '/login', $scope.login).then(
+    $rootScope.loading = true;
+    $http.post($rootScope.apiUrl + '/login', $rootScope.login).then(
       function success(response) {
         console.log(response);
         $localStorage.settings = {user: response.data};
@@ -27,8 +29,8 @@ angular.module('starter.controllers', ['ngStorage'])
       function fail(response) {
         // body...
         console.log(response);
-        $scope.errors = JSON.stringify(response);
-        $scope.loading = false;
+        $rootScope.errors = response.data;
+        $rootScope.loading = false;
       }                                              
     );
   };
@@ -41,12 +43,14 @@ angular.module('starter.controllers', ['ngStorage'])
 })
 
 .controller('ContactsController', function($scope, $rootScope, $filter, $ionicSideMenuDelegate, AuthService) {
-  //AuthService.authorize();
+  AuthService.authorize();
   console.log('ContactsController');
   $scope.contacts = AuthService.user().phoneList;
   $scope.searchData = null;
   $scope.searchResult = [];
   $scope.orderByType = null;
+  $rootScope.errors = null;
+  $rootScope.loading = false;
 
   $scope.toggleMenu = function() {
     $ionicSideMenuDelegate.toggleLeft();
@@ -60,7 +64,7 @@ angular.module('starter.controllers', ['ngStorage'])
   };
   var findByName = function() {
     $scope.searchResult = $scope.contacts.filter(function(contact) {
-      return contact.name.includes($scope.searchData);
+      return contact.name.toLowerCase().includes($scope.searchData.toLowerCase());
     });
   };
   var findByPhone = function() {
@@ -69,22 +73,19 @@ angular.module('starter.controllers', ['ngStorage'])
     });
   };
   $scope.orderBy = function(orderByType) {
+    console.log('orderByType: ' + orderByType);
     switch (orderByType) {
       case 'name':
-        $filter('orderBy')($scope.contacts, 'name');
-        console.log('name');
+       $scope.contacts = $filter('orderBy')($scope.contacts, 'name');
         break;
       case 'age':
-        $filter('orderBy')($scope.contacts, 'age');
-        console.log('age');
+        $scope.contacts = $filter('orderBy')($scope.contacts, 'age');
         break;
       case 'gender':
-        $filter('orderBy')($scope.contacts, 'gender');
-        console.log('gender');
+        $scope.contacts = $filter('orderBy')($scope.contacts, 'gender');
         break;
       case 'rating':
-        $filter('orderBy')($scope.contacts, 'rating');
-        console.log('rating');
+        $scope.contacts = $filter('orderBy')($scope.contacts, 'rating');
         break;
     }
   };
@@ -96,15 +97,17 @@ angular.module('starter.controllers', ['ngStorage'])
   $scope.contact = AuthService.user().phoneList.find(function(contact) {
     return contact.id == $stateParams.contactId;
   });
+  console.log($scope.contact);
   $scope.message = {};
   $scope.shortlink = null;
-  $scope.loading = false;
+  $rootScope.loading = false;
+  $rootScope.errors = null;
 
   $scope.setShortlink = function(shortlink) {
     $scope.shortlink = shortlink;
   };
   $scope.sendMessage = function() {
-    $scope.loading = true;
+    $rootScope.loading = true;
     if ($scope.shortlink) $scope.message.body += "\n" + $scope.shortlink;
     $scope.message.client_id = AuthService.user().main_client_data.id;
     $scope.message.phone = $scope.contact.phone;
@@ -112,11 +115,10 @@ angular.module('starter.controllers', ['ngStorage'])
     console.log($scope.message);
     $http.post($rootScope.apiUrl + '/sendsms', $scope.message).then(
       function success(response) {
-        $scope.loading = false; 
         AuthService.redirect('contacts');
       },
       function fail(response) {
-        $scope.loading = false;
+        $rootScope.loading = false;
       }
     );
   };
@@ -129,20 +131,20 @@ angular.module('starter.controllers', ['ngStorage'])
   AuthService.authorize();
   console.log('ContactAddController');
   $scope.contact = {};
-  $scope.loading = false;
+  $rootScope.loading = false;
+  $rootScope.errors = null;
 
   $scope.addContact = function() {
-    $scope.loading = true; 
+    $rootScope.loading = true; 
     $scope.contact.client_id = AuthService.user().main_client_data.id;
     console.log($scope.contact);
     $http.post($rootScope.apiUrl + '/savephone', $scope.contact).then(
       function success(response) {
-        $scope.loading = false;
         $localStorage.settings.user.phoneList.push($scope.contact);
         AuthService.redirect('contacts');
       },
       function fail(response) {
-        $scope.loading = false;
+        $rootScope.loading = false;
       }
     );
   };
@@ -156,26 +158,26 @@ angular.module('starter.controllers', ['ngStorage'])
   console.log('VenueController');
   $scope.venue = AuthService.user().main_client_data;
   $scope.clientId = null;
-  $scope.loading = false;
+  $rootScope.loading = false;
+  $rootScope.errors = null;
 
   $scope.setClientId = function(clientId) {
     $scope.clientId = clientId;
   };
   $scope.changeVenue = function() {
-    $scope.loading = true;
+    $rootScope.loading = true;
     $scope.venue.client_id = $scope.clientId;
     console.log($scope.venue);
     $http.post($rootScope.apiUrl + '/getlist', $scope.venue).then(
       function success(response) {
         console.log(response);
-        var AppToken = AuthService.user().AppToken;
         $localStorage.settings = {user: response.data};
-        $localStorage.settings.user.AppToken = AppToken;
-        $scope.loading = false; 
+        AuthService.setUser($localStorage.settings.user);
+        AuthService.header('X-Authorization', AuthService.user().AppToken);
         AuthService.redirect('contacts');
       },
       function fail(response) {
-        $scope.loading = false;
+        $rootScope.loading = false;
       }
     );
   };
@@ -189,24 +191,24 @@ angular.module('starter.controllers', ['ngStorage'])
   console.log('QuickMessageController');
   $scope.message = {};
   $scope.shortlink = null;
-  $scope.loading = false;
+  $rootScope.loading = false;
+  $rootScope.errors = null;
 
   $scope.setShortlink = function(shortlink) {
     $scope.shortlink = shortlink;
   };
   $scope.sendMessage = function() {
-    $scope.loading = true;
+    $rootScope.loading = true;
     if ($scope.shortlink) $scope.message.body += "\n" + $scope.shortlink;
     $scope.message.client_id = AuthService.user().main_client_data.id;
     console.log($scope.shortlink);
     console.log($scope.message);
     $http.post($rootScope.apiUrl + '/sendsms', $scope.message).then(
       function success(response) {
-        $scope.loading = false; 
         AuthService.redirect('contacts');
       },
       function fail(response) {
-        $scope.loading = false;
+        $rootScope.loading = false;
       }
     );
   };

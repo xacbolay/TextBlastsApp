@@ -37,9 +37,11 @@ angular.module('starter', [
   });
 })
 
-.config(function($stateProvider, $urlRouterProvider) {
+.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
   // Global http interceptor User token for API middleware response.
   //$httpProvider.interceptors.push('tokenInterceptor');
+  
+  $ionicConfigProvider.views.maxCache(0);
 
   // Ionic uses AngularUI Router which uses the concept of states
   // Learn more here: https://github.com/angular-ui/ui-router

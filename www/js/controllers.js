@@ -21,7 +21,6 @@ angular.module('starter.controllers', ['ngStorage'])
     $http.post($rootScope.apiUrl + '/login', $rootScope.login).then(
       function success(response) {
         console.log(response);
-        $rootScope.loading = false;
         $localStorage.settings = {user: response.data};
         AuthService.setUser($localStorage.settings.user);
         AuthService.header('X-Authorization', AuthService.user().AppToken);
@@ -36,8 +35,6 @@ angular.module('starter.controllers', ['ngStorage'])
     );
   };
   $scope.logOut = function() {
-    $rootScope.loading = false;
-    $rootScope.login = {};
     $localStorage.settings = null;
     $ionicHistory.clearHistory();
     $ionicHistory.clearCache();    
@@ -67,7 +64,7 @@ angular.module('starter.controllers', ['ngStorage'])
   };
   var findByName = function() {
     $scope.searchResult = $scope.contacts.filter(function(contact) {
-      return contact.name.includes($scope.searchData);
+      return contact.name.toLowerCase().includes($scope.searchData.toLowerCase());
     });
   };
   var findByPhone = function() {
@@ -118,7 +115,6 @@ angular.module('starter.controllers', ['ngStorage'])
     console.log($scope.message);
     $http.post($rootScope.apiUrl + '/sendsms', $scope.message).then(
       function success(response) {
-        $rootScope.loading = false; 
         AuthService.redirect('contacts');
       },
       function fail(response) {
@@ -144,7 +140,6 @@ angular.module('starter.controllers', ['ngStorage'])
     console.log($scope.contact);
     $http.post($rootScope.apiUrl + '/savephone', $scope.contact).then(
       function success(response) {
-        $rootScope.loading = false;
         $localStorage.settings.user.phoneList.push($scope.contact);
         AuthService.redirect('contacts');
       },
@@ -176,11 +171,9 @@ angular.module('starter.controllers', ['ngStorage'])
     $http.post($rootScope.apiUrl + '/getlist', $scope.venue).then(
       function success(response) {
         console.log(response);
-        var userBackup = $localStorage.user;
-        $localStorage.settings = null;
         $localStorage.settings = {user: response.data};
-        $localStorage.settings.user.AppToken = userBackup.AppToken;
-        $rootScope.loading = false; 
+        AuthService.setUser($localStorage.settings.user);
+        AuthService.header('X-Authorization', AuthService.user().AppToken);
         AuthService.redirect('contacts');
       },
       function fail(response) {
@@ -212,7 +205,6 @@ angular.module('starter.controllers', ['ngStorage'])
     console.log($scope.message);
     $http.post($rootScope.apiUrl + '/sendsms', $scope.message).then(
       function success(response) {
-        $rootScope.loading = false; 
         AuthService.redirect('contacts');
       },
       function fail(response) {
