@@ -37,7 +37,7 @@ angular.module('starter', [
   });
 })
 
-.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
+.config(function($stateProvider, $urlRouterProvider) {
   // Global http interceptor User token for API middleware response.
   //$httpProvider.interceptors.push('tokenInterceptor');
 

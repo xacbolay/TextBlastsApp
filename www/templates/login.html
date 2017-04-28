@@ -4,6 +4,14 @@
     background-repeat: no-repeat;
     background-size: cover;"
   >
+    
+    <div class="list" ng-show="errors">
+      <span ng-repeat="(tag, error) in errors">
+        <span class="item" ng-repeat="description in error">{{ description }}</span>
+      </span>
+    </div>
+    
+    </div>
 
     <div class="list padding" style="margin-top: 50px;">
       <label class="item item-input item-stacked-label" style="background-color: white">

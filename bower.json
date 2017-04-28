@@ -7,6 +7,7 @@
   "dependencies": {
     "ngstorage": "^0.3.11",
     "cleave.js": "^0.7.10",
-    "angular-moment": "^1.0.1"
+    "angular-moment": "^1.0.1",
+    "lodash": "^4.17.4"
   }
 }
