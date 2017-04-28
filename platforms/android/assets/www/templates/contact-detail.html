@@ -1,0 +1,42 @@
+<ion-view view-title="">
+  <ion-nav-buttons side="left">
+    <button class="button" ng-click="redirectBack()" style="border:0">
+      <i class="icon ion-chevron-left"></i>
+    </button>
+  </ion-nav-buttons>
+
+  <ion-content class="padding">
+    <div class="list card">
+
+      <div class="item item-avatar">
+        <img src="mcfly.jpg">
+        <h2><strong>{{ contact.name }}</strong></h2>
+        <p>#{{ contact.phone }}</p>
+      </div>
+
+      <div class="item item-body">
+      </div>
+
+    </div>
+
+    <div class="list">
+
+      <label class="item item-input item-select">
+        <div class="input-label">Shortlinks</div>
+        <select ng-model="shortlink" ng-options="shortlink.event_title as shortlink.event_title for shortlink in user.eventsData">
+        </select>
+      </label>
+
+      <label class="item item-input item-stacked-label">
+        <span class="input-label">Message</span>
+        <textarea placeholder="Write here..." ng-model="message.body" ng-init="message.body = ''"></textarea>
+        <p>{{ message.body.length }}/<strong>{{ (140 - shortlink.length) }}</strong></p>
+      </label>
+
+      <button class="button button-full button-positive" ng-disabled="loading" ng-click="sendMessage()">
+        <span ng-show="!loading">Send message</span>
+        <ion-spinner icon="lines" ng-show="loading"></ion-spinner>
+      </button>
+    </div>
+  </ion-content>
+</ion-view>

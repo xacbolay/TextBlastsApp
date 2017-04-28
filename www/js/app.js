@@ -28,7 +28,7 @@ angular.module('starter', [
 
     // Set user token for all http requests and global scope model user.
     if ($localStorage.settings) {
-      $http.defaults.headers.common['token'] = $localStorage.settings.user.token;
+      $http.defaults.headers.common['X-Authorization'] = $localStorage.settings.user.token;
       console.log('token: ' + $localStorage.settings.user.token);
       AuthService.setUser($localStorage.settings.user);
     }
