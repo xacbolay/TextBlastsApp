@@ -1,5 +1,5 @@
 #Internal package file, do not edit.
-#Thu Apr 27 21:41:38 VET 2017
+#Thu Apr 27 22:07:27 VET 2017
 20.base=C\:\\Users\\david\\ionic-proj\\myApp\\platforms\\android\\build\\intermediates\\assets\\debug
 143.base=C\:\\Users\\david\\ionic-proj\\myApp\\platforms\\android\\build\\intermediates\\assets\\debug
 493.base=C\:\\Users\\david\\ionic-proj\\myApp\\platforms\\android\\build\\intermediates\\assets\\debug

@@ -20,7 +20,7 @@ angular.module('starter.controllers', ['ngStorage'])
         console.log(response);
         $localStorage.settings = {user: response.data};
         AuthService.setUser($localStorage.settings.user);
-        AuthService.header('token', AuthService.user().AppToken);
+        AuthService.header('X-Authorization', AuthService.user().AppToken);
         AuthService.redirect('contacts');
       },
       function fail(response) {
@@ -86,14 +86,25 @@ angular.module('starter.controllers', ['ngStorage'])
 .controller('ContactDetailController', function($scope, $rootScope, $stateParams, AuthService) {
   AuthService.authorize();
   $scope.contact = AuthService.user().phoneList.find(function(contact) {
-    return contact.client_id == $stateParams.contactId;
+    return contact.id == $stateParams.contactId;
   });
   $scope.message = {};
   $scope.shortlink = null;
   $scope.loading = false;
 
   $scope.sendMessage = function() {
-    // body...
+    $scope.loading = true;
+    $scope.message.body += "" + $scope.shortlink;
+    $scope.message.client_id = AuthService.user().main_client_data.id;
+    $http.post($rootScope.apiUrl + '/', $scope.message).then(
+      function success(response) {
+        $scope.loading = false; 
+        AuthService.redirect('contacts');
+      },
+      function fail(response) {
+        $scope.loading = false;
+      }
+    );
   };
   $scope.redirectBack = function() {
     AuthService.redirect('contacts');
@@ -107,7 +118,7 @@ angular.module('starter.controllers', ['ngStorage'])
 
   $scope.addContact = function() {
     $scope.loading = true; 
-    $scope.contact.client_id = AuthService.user().client_data[0].id;
+    $scope.contact.client_id = AuthService.user().main_client_data.id;
     $http.post($rootScope.apiUrl + '/savephone', $scope.contact).then(
       function success(response) {
         $scope.loading = false; 
@@ -125,7 +136,7 @@ angular.module('starter.controllers', ['ngStorage'])
 
 .controller('VenueController', function($scope, $rootScope, $http, AuthService) {
   AuthService.authorize();
-  $scope.venue = AuthService.user().client_data[0];
+  $scope.venue = AuthService.user().main_client_data;
   $scope.loading = false;
 
   $scope.changeVenue = function() {
@@ -154,7 +165,7 @@ angular.module('starter.controllers', ['ngStorage'])
   $scope.sendMessage = function() {
     $scope.loading = true;
     $scope.message.body += "" + $scope.shortlink;
-    $scope.message.client_id = AuthService.user().client_data[0].id;
+    $scope.message.client_id = AuthService.user().main_client_data.id;
     $http.post($rootScope.apiUrl + '/sendsms', $scope.message).then(
       function success(response) {
         $scope.loading = false; 

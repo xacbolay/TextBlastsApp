@@ -96,6 +96,7 @@ angular.module('starter.controllers', ['ngStorage'])
     $scope.loading = true;
     $scope.message.body += "" + $scope.shortlink;
     $scope.message.client_id = AuthService.user().main_client_data.id;
+    console.log($scope.message);
     $http.post($rootScope.apiUrl + '/', $scope.message).then(
       function success(response) {
         $scope.loading = false; 
@@ -119,6 +120,7 @@ angular.module('starter.controllers', ['ngStorage'])
   $scope.addContact = function() {
     $scope.loading = true; 
     $scope.contact.client_id = AuthService.user().main_client_data.id;
+    console.log($scope.contact);
     $http.post($rootScope.apiUrl + '/savephone', $scope.contact).then(
       function success(response) {
         $scope.loading = false; 
@@ -166,6 +168,7 @@ angular.module('starter.controllers', ['ngStorage'])
     $scope.loading = true;
     $scope.message.body += "" + $scope.shortlink;
     $scope.message.client_id = AuthService.user().main_client_data.id;
+    console.log($scope.message);
     $http.post($rootScope.apiUrl + '/sendsms', $scope.message).then(
       function success(response) {
         $scope.loading = false; 
