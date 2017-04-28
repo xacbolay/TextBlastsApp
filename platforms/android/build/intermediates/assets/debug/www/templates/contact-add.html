@@ -1,0 +1,51 @@
+<ion-view view-title="New contact">
+  <ion-nav-buttons side="left">
+    <button class="button" ng-click="redirectBack()" style="border:0">
+      <i class="icon ion-chevron-left"></i>
+    </button>
+  </ion-nav-buttons>
+
+  <ion-content class="padding">
+    <div class="list">
+      <label class="item item-input item-stacked-label">
+        <span class="input-label">Full name</span>
+        <input type="text" ng-model="contact.name">
+      </label>
+
+      <label class="item item-input item-stacked-label">
+        <span class="input-label">Phone number</span>
+        <input type="number" ng-model="contact.phone">
+      </label>
+
+      <label class="item item-input item-stacked-label">
+        <span class="input-label">Age</span>
+        <input type="number" ng-model="contact.age">
+      </label>
+
+      <label class="item item-input item-select">
+        <div class="input-label">Gender</div>
+        <select ng-model="contact.gender">
+          <option>Female</option>
+          <option>Male</option>
+        </select>
+      </label>
+
+      <label class="item item-input item-stacked-label">
+        <span class="input-label">Rating <span class="input-label"></span>{{ contact.rating }} of 10</span>
+      </label>
+
+      <div class="list">
+        <div class="item range range-positive">
+          <i class="icon ion-minus"></i>          
+          <input type="range" min="1" max="10" ng-model="contact.rating" ng-init="contact.rating = 1">
+          <i class="icon ion-plus"></i>
+        </div>
+      </div>
+
+      <button class="button button-full button-positive" ng-disabled="loading" ng-click="addContact()">
+        <span ng-show="!loading">Add contact</span>
+        <ion-spinner icon="lines" ng-show="loading"></ion-spinner>
+      </button>
+    </div>
+  </ion-content>
+</ion-view>

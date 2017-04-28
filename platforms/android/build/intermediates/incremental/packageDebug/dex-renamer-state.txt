@@ -1,0 +1,4 @@
+#Thu Apr 27 21:41:35 VET 2017
+base.0=C\:\\Users\\david\\ionic-proj\\myApp\\platforms\\android\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\1f\\main
+renamed.0=classes.dex
+file.0=C\:\\Users\\david\\ionic-proj\\myApp\\platforms\\android\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\1f\\main\\classes.dex

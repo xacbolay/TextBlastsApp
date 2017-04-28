@@ -1,0 +1,50 @@
+<ion-view view-title="Contacts">
+  <ion-nav-buttons side="left">
+    <button class="button" ng-click="toggleMenu()" style="border:0">
+      <i class="icon ion-navicon-round"></i>
+    </button>
+  </ion-nav-buttons>
+
+  <div class="bar bar-subheader">
+    <h2 class="title">
+      <label class="item item-input">
+        <i class="icon ion-search placeholder-icon"></i>
+        <input type="text" placeholder="Search" ng-model="searchData" ng-change="findBy()">
+      </label>
+    </h2>
+  </div>
+
+  <ion-content style="margin-top: 50px">
+    <label class="item item-input item-select">
+      <div class="input-label">Order by</div>
+      <select ng-model="orderByType" ng-change="orderBy(orderByType)">
+        <option value="name">Name</option>
+        <option value="age">Age</option>
+        <option value="gender">Gender</option>
+        <option value="rating">Rating</option>
+      </select>
+    </label>
+
+    <ion-list ng-show="!searchResult.length">
+      <a class="item item-thumbnail-left" href="#/contacts/{{contact.client_id}}" ng-repeat="contact in contacts" menu-close>
+        <img src="cover.jpg">
+        <h2><strong>{{ contact.name }}</strong></h2>
+        <p>#{{ contact.phone }}</p>
+        <p>Gender: {{ contact.gender }}</p>
+        <p>Age: {{ contact.age }}</p>
+        <p>Rating: {{ contact.rating }}</p>
+      </a>
+    </ion-list>
+
+    <ion-list ng-show="searchResult.length">
+      <a class="item item-thumbnail-left" href="#/contacts/{{contact.client_id}}" ng-repeat="contact in searchResult" menu-close>
+        <img src="cover.jpg">
+        <h2><strong>{{ contact.name }}</strong></h2>
+        <p>#{{ contact.phone }}</p>
+        <p>Gender: {{ contact.gender }}</p>
+        <p>Age: {{ contact.age }}</p>
+        <p>Rating: {{ contact.rating }}</p>
+      </a>
+    </ion-list>
+  </ion-content>
+</ion-view>
