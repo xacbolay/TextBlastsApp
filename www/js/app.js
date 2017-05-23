@@ -54,7 +54,7 @@ angular.module('starter', [
   $stateProvider
 
   .state('contacts', {
-    url: '/',
+    url: '/contacts',
     templateUrl: 'templates/contacts.html',
     controller: 'ContactsController'
   })
@@ -84,49 +84,9 @@ angular.module('starter', [
   })
 
   .state('login', {
-    url: '/login',
+    url: '/',
     templateUrl: 'templates/login.html',
     controller: 'AuthController'
   })
-
-  /**
-  // setup an abstract state for the tabs directive
-  .state('tab', {
-    url: '/tab',
-    abstract: true,
-    templateUrl: 'templates/tabs.html'
-  })
-
-  // Each tab has its own nav history stack:
-
-  .state('tab.chats', {
-      url: '/chats',
-      views: {
-        'tab-chats': {
-          templateUrl: 'templates/tab-chats.html',
-          controller: 'ChatsCtrl'
-        }
-      }
-    })
-    .state('tab.chat-detail', {
-      url: '/chats/:chatId',
-      views: {
-        'tab-chats': {
-          templateUrl: 'templates/chat-detail.html',
-          controller: 'ChatDetailCtrl'
-        }
-      }
-    })
-
-  .state('tab.account', {
-    url: '/account',
-    views: {
-      'tab-account': {
-        templateUrl: 'templates/tab-account.html',
-        controller: 'AccountCtrl'
-      }
-    }
-  });
-  **/
 
 });

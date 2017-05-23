@@ -35,7 +35,7 @@ angular.module('starter.controllers', ['ngStorage'])
     );
   };
   $scope.logOut = function() {
-    $localStorage.settings = null;
+    $localStorage.$reset();
     $ionicHistory.clearHistory();
     $ionicHistory.clearCache();    
     AuthService.redirect('login');

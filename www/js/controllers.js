@@ -8,7 +8,7 @@ angular.module('starter.controllers', ['ngStorage'])
   //});
 
 //  Login Controller
-.controller('AuthController', function($scope, $rootScope, $ionicHistory, $http, $localStorage, AuthService) {
+.controller('AuthController', function($scope, $rootScope, $http, $localStorage, AuthService) {
   AuthService.authorize();
   console.log('AuthController');
   console.log($localStorage);
@@ -36,8 +36,8 @@ angular.module('starter.controllers', ['ngStorage'])
   };
   $scope.logOut = function() {
     $localStorage.$reset();
-    $ionicHistory.clearHistory();
-    $ionicHistory.clearCache();    
+    //$ionicHistory.clearHistory();
+    //$ionicHistory.clearCache();    
     AuthService.redirect('login');
   };
 })

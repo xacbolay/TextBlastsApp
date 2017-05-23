@@ -28,8 +28,9 @@ angular.module('starter.services', ['ngStorage'])
     setUser: this.setUser,
     redirect: this.redirect
   };
-})
+});
 
+/**
 .factory('tokenInterceptor', function ($q) {
   return {
     response: function (response) {
@@ -52,3 +53,4 @@ angular.module('starter.services', ['ngStorage'])
     }
   };
 });
+**/
